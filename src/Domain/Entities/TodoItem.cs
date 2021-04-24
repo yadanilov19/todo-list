@@ -20,7 +20,7 @@ namespace CleanArchitecture.Domain.Entities
 
         public PriorityLevel Priority { get; set; }
 
-        public DateTime? Reminder { get; set; }
+        public DateTime? ExpiryDate { get; set; }
 
         private bool _done;
         public bool Done
