@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Exceptions;
+﻿using System;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using MediatR;
@@ -14,6 +15,8 @@ namespace CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItem
         public string Title { get; set; }
 
         public bool Done { get; set; }
+        
+        public DateTime? ExpiryDate { get; set; }
     }
 
     public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemCommand>
@@ -36,6 +39,7 @@ namespace CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItem
 
             entity.Title = request.Title;
             entity.Done = request.Done;
+            entity.ExpiryDate = request.ExpiryDate;
 
             await _context.SaveChangesAsync(cancellationToken);
 

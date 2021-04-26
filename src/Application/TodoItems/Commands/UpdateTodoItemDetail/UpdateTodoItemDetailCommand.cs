@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Exceptions;
+﻿using System;
+using CleanArchitecture.Application.Common.Exceptions;
 using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Enums;
@@ -15,6 +16,10 @@ namespace CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItemDetail
         public int ListId { get; set; }
 
         public PriorityLevel Priority { get; set; }
+        
+        public DateTime? ExpiryDate { get; set; }
+
+        public int? TodoRefId { get; set; }
 
         public string Note { get; set; }
     }
@@ -40,6 +45,12 @@ namespace CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItemDetail
             entity.ListId = request.ListId;
             entity.Priority = request.Priority;
             entity.Note = request.Note;
+            entity.ExpiryDate = request.ExpiryDate;
+
+            if (request.TodoRefId is not null)
+            {
+                entity.TodoItemRef = new TodoItem() {Id = (int) request.TodoRefId};
+            }
 
             await _context.SaveChangesAsync(cancellationToken);
 

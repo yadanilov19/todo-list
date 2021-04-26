@@ -1,4 +1,5 @@
-﻿using CleanArchitecture.Application.Common.Interfaces;
+﻿using System;
+using CleanArchitecture.Application.Common.Interfaces;
 using CleanArchitecture.Domain.Entities;
 using CleanArchitecture.Domain.Events;
 using MediatR;
@@ -12,6 +13,8 @@ namespace CleanArchitecture.Application.TodoItems.Commands.CreateTodoItem
         public int ListId { get; set; }
 
         public string Title { get; set; }
+        
+        public DateTime? ExpiryDate { get; set; }
     }
 
     public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, int>
