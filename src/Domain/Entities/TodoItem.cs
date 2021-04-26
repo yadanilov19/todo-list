@@ -13,7 +13,6 @@ namespace CleanArchitecture.Domain.Entities
         public TodoList List { get; set; }
 
         public int ListId { get; set; }
-
         public string Title { get; set; }
 
         public string Note { get; set; }
@@ -36,6 +35,8 @@ namespace CleanArchitecture.Domain.Entities
                 _done = value;
             }
         }
+        
+        public TodoItem TodoItemRef { get; set; }
 
         public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
     }

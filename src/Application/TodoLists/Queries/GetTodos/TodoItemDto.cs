@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using CleanArchitecture.Application.Common.Mappings;
 using CleanArchitecture.Domain.Entities;
 
@@ -17,6 +18,9 @@ namespace CleanArchitecture.Application.TodoLists.Queries.GetTodos
         public int Priority { get; set; }
 
         public string Note { get; set; }
+        
+        public DateTime? ExpiryDate { get; set; }
+        public TodoItem TodoItemRef { get; set; }
 
         public void Mapping(Profile profile)
         {
