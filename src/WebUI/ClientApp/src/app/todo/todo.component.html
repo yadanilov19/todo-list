@@ -124,6 +124,16 @@
         </select>
       </div>
       <div class="form-group">
+        <label for="priority">Expiry Date</label>
+        <input class="form-control" type="text" [(ngModel)]="itemDetailsEditor.expiryDate" bsDatepicker/>
+      </div>
+      <div class="form-group">
+        <label for="priority">Reffered task</label>
+        <select class="form-control" [(ngModel)]="itemDetailsEditor.todoItemRefId">
+          <option [ngValue]="level.id" *ngFor="let level of selectedList.items">{{ level.title }}</option>
+        </select>
+      </div>
+      <div class="form-group">
         <label for="note">Note</label>
         <textarea id="note" class="form-control" rows="3" [(ngModel)]="itemDetailsEditor.note"></textarea>
       </div>

@@ -146,6 +146,8 @@ export class TodoComponent {
 
                     this.selectedItem.priority = this.itemDetailsEditor.priority;
                     this.selectedItem.note = this.itemDetailsEditor.note;
+                    this.selectedItem.expiryDate = this.itemDetailsEditor.expiryDate;
+                    this.selectedItem.todoItemRefId = this.itemDetailsEditor.todoItemRefId;
                     this.itemDetailsModalRef.hide();
                     this.itemDetailsEditor = {};
                 },

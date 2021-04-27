@@ -20,7 +20,7 @@ namespace CleanArchitecture.Application.TodoLists.Queries.GetTodos
         public string Note { get; set; }
         
         public DateTime? ExpiryDate { get; set; }
-        public TodoItem TodoItemRef { get; set; }
+        public int? TodoItemRefId { get; set; }
 
         public void Mapping(Profile profile)
         {

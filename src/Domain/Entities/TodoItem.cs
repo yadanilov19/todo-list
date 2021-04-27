@@ -20,6 +20,9 @@ namespace CleanArchitecture.Domain.Entities
         public PriorityLevel Priority { get; set; }
 
         public DateTime? ExpiryDate { get; set; }
+        public int? TodoItemRefId { get; set; }
+        public virtual TodoItem TodoItemRef { get; set; }
+
 
         private bool _done;
         public bool Done
@@ -36,9 +39,6 @@ namespace CleanArchitecture.Domain.Entities
             }
         }
         
-        public int? TodoItemRefId { get; set; }
-        public virtual TodoItem TodoItemRef { get; set; }
-
         public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
     }
 }

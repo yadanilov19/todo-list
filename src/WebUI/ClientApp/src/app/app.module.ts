@@ -12,14 +12,18 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { AppRoutingModule } from './app-routing.module';
+import {HomeComponent} from "./home/home.component";
+import {BsDatepickerModule} from "ngx-bootstrap/datepicker";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavMenuComponent,
-    TodoComponent
+    TodoComponent,
+    HomeComponent
   ],
   imports: [
+    BsDatepickerModule.forRoot(),
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     FontAwesomeModule,
     HttpClientModule,

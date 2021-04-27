@@ -157,5 +157,8 @@
       }
     }
   },
-  "defaultProject": "CleanArchitecture.WebUI"
+  "defaultProject": "CleanArchitecture.WebUI",
+  "cli": {
+    "analytics": false
+  }
 }

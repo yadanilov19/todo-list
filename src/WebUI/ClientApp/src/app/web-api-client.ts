@@ -649,7 +649,7 @@ export class TodoItemDto implements ITodoItemDto {
     priority?: number;
     note?: string | undefined;
     expiryDate?: Date | undefined;
-    todoItemRef?: TodoItem | undefined;
+    todoItemRefId?: number | undefined;
 
     constructor(data?: ITodoItemDto) {
         if (data) {
@@ -669,7 +669,7 @@ export class TodoItemDto implements ITodoItemDto {
             this.priority = _data["priority"];
             this.note = _data["note"];
             this.expiryDate = _data["expiryDate"] ? new Date(_data["expiryDate"].toString()) : <any>undefined;
-            this.todoItemRef = _data["todoItemRef"] ? TodoItem.fromJS(_data["todoItemRef"]) : <any>undefined;
+            this.todoItemRefId = _data["todoItemRefId"];
         }
     }
 
@@ -689,7 +689,7 @@ export class TodoItemDto implements ITodoItemDto {
         data["priority"] = this.priority;
         data["note"] = this.note;
         data["expiryDate"] = this.expiryDate ? this.expiryDate.toISOString() : <any>undefined;
-        data["todoItemRef"] = this.todoItemRef ? this.todoItemRef.toJSON() : <any>undefined;
+        data["todoItemRefId"] = this.todoItemRefId;
         return data; 
     }
 }
@@ -702,293 +702,7 @@ export interface ITodoItemDto {
     priority?: number;
     note?: string | undefined;
     expiryDate?: Date | undefined;
-    todoItemRef?: TodoItem | undefined;
-}
-
-export abstract class AuditableEntity implements IAuditableEntity {
-    created?: Date;
-    createdBy?: string | undefined;
-    lastModified?: Date | undefined;
-    lastModifiedBy?: string | undefined;
-
-    constructor(data?: IAuditableEntity) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.created = _data["created"] ? new Date(_data["created"].toString()) : <any>undefined;
-            this.createdBy = _data["createdBy"];
-            this.lastModified = _data["lastModified"] ? new Date(_data["lastModified"].toString()) : <any>undefined;
-            this.lastModifiedBy = _data["lastModifiedBy"];
-        }
-    }
-
-    static fromJS(data: any): AuditableEntity {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'AuditableEntity' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["created"] = this.created ? this.created.toISOString() : <any>undefined;
-        data["createdBy"] = this.createdBy;
-        data["lastModified"] = this.lastModified ? this.lastModified.toISOString() : <any>undefined;
-        data["lastModifiedBy"] = this.lastModifiedBy;
-        return data; 
-    }
-}
-
-export interface IAuditableEntity {
-    created?: Date;
-    createdBy?: string | undefined;
-    lastModified?: Date | undefined;
-    lastModifiedBy?: string | undefined;
-}
-
-export class TodoItem extends AuditableEntity implements ITodoItem {
-    id?: number;
-    list?: TodoList | undefined;
-    listId?: number;
-    title?: string | undefined;
-    note?: string | undefined;
-    priority?: PriorityLevel;
-    expiryDate?: Date | undefined;
-    done?: boolean;
     todoItemRefId?: number | undefined;
-    todoItemRef?: TodoItem | undefined;
-    domainEvents?: DomainEvent[] | undefined;
-
-    constructor(data?: ITodoItem) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.id = _data["id"];
-            this.list = _data["list"] ? TodoList.fromJS(_data["list"]) : <any>undefined;
-            this.listId = _data["listId"];
-            this.title = _data["title"];
-            this.note = _data["note"];
-            this.priority = _data["priority"];
-            this.expiryDate = _data["expiryDate"] ? new Date(_data["expiryDate"].toString()) : <any>undefined;
-            this.done = _data["done"];
-            this.todoItemRefId = _data["todoItemRefId"];
-            this.todoItemRef = _data["todoItemRef"] ? TodoItem.fromJS(_data["todoItemRef"]) : <any>undefined;
-            if (Array.isArray(_data["domainEvents"])) {
-                this.domainEvents = [] as any;
-                for (let item of _data["domainEvents"])
-                    this.domainEvents!.push(DomainEvent.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TodoItem {
-        data = typeof data === 'object' ? data : {};
-        let result = new TodoItem();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["list"] = this.list ? this.list.toJSON() : <any>undefined;
-        data["listId"] = this.listId;
-        data["title"] = this.title;
-        data["note"] = this.note;
-        data["priority"] = this.priority;
-        data["expiryDate"] = this.expiryDate ? this.expiryDate.toISOString() : <any>undefined;
-        data["done"] = this.done;
-        data["todoItemRefId"] = this.todoItemRefId;
-        data["todoItemRef"] = this.todoItemRef ? this.todoItemRef.toJSON() : <any>undefined;
-        if (Array.isArray(this.domainEvents)) {
-            data["domainEvents"] = [];
-            for (let item of this.domainEvents)
-                data["domainEvents"].push(item.toJSON());
-        }
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITodoItem extends IAuditableEntity {
-    id?: number;
-    list?: TodoList | undefined;
-    listId?: number;
-    title?: string | undefined;
-    note?: string | undefined;
-    priority?: PriorityLevel;
-    expiryDate?: Date | undefined;
-    done?: boolean;
-    todoItemRefId?: number | undefined;
-    todoItemRef?: TodoItem | undefined;
-    domainEvents?: DomainEvent[] | undefined;
-}
-
-export class TodoList extends AuditableEntity implements ITodoList {
-    id?: number;
-    title?: string | undefined;
-    colour?: Colour | undefined;
-    items?: TodoItem[] | undefined;
-
-    constructor(data?: ITodoList) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.id = _data["id"];
-            this.title = _data["title"];
-            this.colour = _data["colour"] ? Colour.fromJS(_data["colour"]) : <any>undefined;
-            if (Array.isArray(_data["items"])) {
-                this.items = [] as any;
-                for (let item of _data["items"])
-                    this.items!.push(TodoItem.fromJS(item));
-            }
-        }
-    }
-
-    static fromJS(data: any): TodoList {
-        data = typeof data === 'object' ? data : {};
-        let result = new TodoList();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["id"] = this.id;
-        data["title"] = this.title;
-        data["colour"] = this.colour ? this.colour.toJSON() : <any>undefined;
-        if (Array.isArray(this.items)) {
-            data["items"] = [];
-            for (let item of this.items)
-                data["items"].push(item.toJSON());
-        }
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface ITodoList extends IAuditableEntity {
-    id?: number;
-    title?: string | undefined;
-    colour?: Colour | undefined;
-    items?: TodoItem[] | undefined;
-}
-
-export abstract class ValueObject implements IValueObject {
-
-    constructor(data?: IValueObject) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-    }
-
-    static fromJS(data: any): ValueObject {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'ValueObject' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        return data; 
-    }
-}
-
-export interface IValueObject {
-}
-
-export class Colour extends ValueObject implements IColour {
-    code?: string | undefined;
-
-    constructor(data?: IColour) {
-        super(data);
-    }
-
-    init(_data?: any) {
-        super.init(_data);
-        if (_data) {
-            this.code = _data["code"];
-        }
-    }
-
-    static fromJS(data: any): Colour {
-        data = typeof data === 'object' ? data : {};
-        let result = new Colour();
-        result.init(data);
-        return result;
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["code"] = this.code;
-        super.toJSON(data);
-        return data; 
-    }
-}
-
-export interface IColour extends IValueObject {
-    code?: string | undefined;
-}
-
-export enum PriorityLevel {
-    None = 0,
-    Low = 1,
-    Medium = 2,
-    High = 3,
-}
-
-export abstract class DomainEvent implements IDomainEvent {
-    isPublished?: boolean;
-    dateOccurred?: Date;
-
-    constructor(data?: IDomainEvent) {
-        if (data) {
-            for (var property in data) {
-                if (data.hasOwnProperty(property))
-                    (<any>this)[property] = (<any>data)[property];
-            }
-        }
-    }
-
-    init(_data?: any) {
-        if (_data) {
-            this.isPublished = _data["isPublished"];
-            this.dateOccurred = _data["dateOccurred"] ? new Date(_data["dateOccurred"].toString()) : <any>undefined;
-        }
-    }
-
-    static fromJS(data: any): DomainEvent {
-        data = typeof data === 'object' ? data : {};
-        throw new Error("The abstract class 'DomainEvent' cannot be instantiated.");
-    }
-
-    toJSON(data?: any) {
-        data = typeof data === 'object' ? data : {};
-        data["isPublished"] = this.isPublished;
-        data["dateOccurred"] = this.dateOccurred ? this.dateOccurred.toISOString() : <any>undefined;
-        return data; 
-    }
-}
-
-export interface IDomainEvent {
-    isPublished?: boolean;
-    dateOccurred?: Date;
 }
 
 export class CreateTodoItemCommand implements ICreateTodoItemCommand {
@@ -1137,6 +851,13 @@ export interface IUpdateTodoItemDetailCommand {
     expiryDate?: Date | undefined;
     todoRefId?: number | undefined;
     note?: string | undefined;
+}
+
+export enum PriorityLevel {
+    None = 0,
+    Low = 1,
+    Medium = 2,
+    High = 3,
 }
 
 export class TodosVm implements ITodosVm {
