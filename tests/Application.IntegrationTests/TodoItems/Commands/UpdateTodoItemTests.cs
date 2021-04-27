@@ -37,10 +37,12 @@ namespace CleanArchitecture.Application.IntegrationTests.TodoItems.Commands
                 Title = "New List"
             });
 
+            var expiryDate = new DateTime(2000, 1, 1);
             var itemId = await SendAsync(new CreateTodoItemCommand
             {
                 ListId = listId,
-                Title = "New Item"
+                Title = "New Item",
+                ExpiryDate = expiryDate
             });
 
             var command = new UpdateTodoItemCommand

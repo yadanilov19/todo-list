@@ -32,10 +32,12 @@ namespace CleanArchitecture.Application.IntegrationTests.TodoItems.Commands
                 Title = "New List"
             });
 
+            var expiryDate = new DateTime(2000, 12, 1);
             var command = new CreateTodoItemCommand
             {
                 ListId = listId,
-                Title = "Tasks"
+                Title = "Tasks",
+                ExpiryDate = expiryDate
             };
 
             var itemId = await SendAsync(command);
@@ -47,6 +49,7 @@ namespace CleanArchitecture.Application.IntegrationTests.TodoItems.Commands
             item.Title.Should().Be(command.Title);
             item.CreatedBy.Should().Be(userId);
             item.Created.Should().BeCloseTo(DateTime.Now, 10000);
+            item.ExpiryDate.Should().Be(expiryDate);
             item.LastModifiedBy.Should().BeNull();
             item.LastModified.Should().BeNull();
         }

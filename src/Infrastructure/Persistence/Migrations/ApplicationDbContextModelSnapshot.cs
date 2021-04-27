@@ -35,6 +35,9 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<bool>("Done")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("LastModified")
                         .HasColumnType("datetime2");
 
@@ -50,17 +53,19 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                     b.Property<int>("Priority")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Reminder")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int?>("TodoItemRefId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ListId");
+
+                    b.HasIndex("TodoItemRefId");
 
                     b.ToTable("TodoItems");
                 });
@@ -405,7 +410,13 @@ namespace CleanArchitecture.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CleanArchitecture.Domain.Entities.TodoItem", "TodoItemRef")
+                        .WithMany()
+                        .HasForeignKey("TodoItemRefId");
+
                     b.Navigation("List");
+
+                    b.Navigation("TodoItemRef");
                 });
 
             modelBuilder.Entity("CleanArchitecture.Domain.Entities.TodoList", b =>

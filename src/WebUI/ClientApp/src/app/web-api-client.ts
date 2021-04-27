@@ -760,6 +760,7 @@ export class TodoItem extends AuditableEntity implements ITodoItem {
     priority?: PriorityLevel;
     expiryDate?: Date | undefined;
     done?: boolean;
+    todoItemRefId?: number | undefined;
     todoItemRef?: TodoItem | undefined;
     domainEvents?: DomainEvent[] | undefined;
 
@@ -778,6 +779,7 @@ export class TodoItem extends AuditableEntity implements ITodoItem {
             this.priority = _data["priority"];
             this.expiryDate = _data["expiryDate"] ? new Date(_data["expiryDate"].toString()) : <any>undefined;
             this.done = _data["done"];
+            this.todoItemRefId = _data["todoItemRefId"];
             this.todoItemRef = _data["todoItemRef"] ? TodoItem.fromJS(_data["todoItemRef"]) : <any>undefined;
             if (Array.isArray(_data["domainEvents"])) {
                 this.domainEvents = [] as any;
@@ -804,6 +806,7 @@ export class TodoItem extends AuditableEntity implements ITodoItem {
         data["priority"] = this.priority;
         data["expiryDate"] = this.expiryDate ? this.expiryDate.toISOString() : <any>undefined;
         data["done"] = this.done;
+        data["todoItemRefId"] = this.todoItemRefId;
         data["todoItemRef"] = this.todoItemRef ? this.todoItemRef.toJSON() : <any>undefined;
         if (Array.isArray(this.domainEvents)) {
             data["domainEvents"] = [];
@@ -824,6 +827,7 @@ export interface ITodoItem extends IAuditableEntity {
     priority?: PriorityLevel;
     expiryDate?: Date | undefined;
     done?: boolean;
+    todoItemRefId?: number | undefined;
     todoItemRef?: TodoItem | undefined;
     domainEvents?: DomainEvent[] | undefined;
 }
@@ -990,6 +994,7 @@ export interface IDomainEvent {
 export class CreateTodoItemCommand implements ICreateTodoItemCommand {
     listId?: number;
     title?: string | undefined;
+    expiryDate?: Date | undefined;
 
     constructor(data?: ICreateTodoItemCommand) {
         if (data) {
@@ -1004,6 +1009,7 @@ export class CreateTodoItemCommand implements ICreateTodoItemCommand {
         if (_data) {
             this.listId = _data["listId"];
             this.title = _data["title"];
+            this.expiryDate = _data["expiryDate"] ? new Date(_data["expiryDate"].toString()) : <any>undefined;
         }
     }
 
@@ -1018,6 +1024,7 @@ export class CreateTodoItemCommand implements ICreateTodoItemCommand {
         data = typeof data === 'object' ? data : {};
         data["listId"] = this.listId;
         data["title"] = this.title;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -1025,12 +1032,14 @@ export class CreateTodoItemCommand implements ICreateTodoItemCommand {
 export interface ICreateTodoItemCommand {
     listId?: number;
     title?: string | undefined;
+    expiryDate?: Date | undefined;
 }
 
 export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
     id?: number;
     title?: string | undefined;
     done?: boolean;
+    expiryDate?: Date | undefined;
 
     constructor(data?: IUpdateTodoItemCommand) {
         if (data) {
@@ -1046,6 +1055,7 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
             this.id = _data["id"];
             this.title = _data["title"];
             this.done = _data["done"];
+            this.expiryDate = _data["expiryDate"] ? new Date(_data["expiryDate"].toString()) : <any>undefined;
         }
     }
 
@@ -1061,6 +1071,7 @@ export class UpdateTodoItemCommand implements IUpdateTodoItemCommand {
         data["id"] = this.id;
         data["title"] = this.title;
         data["done"] = this.done;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toISOString() : <any>undefined;
         return data; 
     }
 }
@@ -1069,12 +1080,15 @@ export interface IUpdateTodoItemCommand {
     id?: number;
     title?: string | undefined;
     done?: boolean;
+    expiryDate?: Date | undefined;
 }
 
 export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand {
     id?: number;
     listId?: number;
     priority?: PriorityLevel;
+    expiryDate?: Date | undefined;
+    todoRefId?: number | undefined;
     note?: string | undefined;
 
     constructor(data?: IUpdateTodoItemDetailCommand) {
@@ -1091,6 +1105,8 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
             this.id = _data["id"];
             this.listId = _data["listId"];
             this.priority = _data["priority"];
+            this.expiryDate = _data["expiryDate"] ? new Date(_data["expiryDate"].toString()) : <any>undefined;
+            this.todoRefId = _data["todoRefId"];
             this.note = _data["note"];
         }
     }
@@ -1107,6 +1123,8 @@ export class UpdateTodoItemDetailCommand implements IUpdateTodoItemDetailCommand
         data["id"] = this.id;
         data["listId"] = this.listId;
         data["priority"] = this.priority;
+        data["expiryDate"] = this.expiryDate ? this.expiryDate.toISOString() : <any>undefined;
+        data["todoRefId"] = this.todoRefId;
         data["note"] = this.note;
         return data; 
     }
@@ -1116,6 +1134,8 @@ export interface IUpdateTodoItemDetailCommand {
     id?: number;
     listId?: number;
     priority?: PriorityLevel;
+    expiryDate?: Date | undefined;
+    todoRefId?: number | undefined;
     note?: string | undefined;
 }
 

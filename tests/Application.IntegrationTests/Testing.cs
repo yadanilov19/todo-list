@@ -15,6 +15,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using CleanArchitecture.Domain.Entities;
 
 [SetUpFixture]
 public class Testing
@@ -141,8 +142,15 @@ public class Testing
         using var scope = _scopeFactory.CreateScope();
 
         var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
-
         return await context.FindAsync<TEntity>(keyValues);
+    }
+    
+    public static async Task<TodoItem> FindTodoFullInfoAsync(int rowId)
+    {
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+        return await context.TodoItems.Include(p => p.TodoItemRef).FirstOrDefaultAsync(p => p.Id == rowId);
     }
 
     public static async Task AddAsync<TEntity>(TEntity entity)

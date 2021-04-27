@@ -32,6 +32,7 @@ namespace CleanArchitecture.Application.TodoItems.Commands.CreateTodoItem
             {
                 ListId = request.ListId,
                 Title = request.Title,
+                ExpiryDate = request.ExpiryDate,
                 Done = false
             };
 

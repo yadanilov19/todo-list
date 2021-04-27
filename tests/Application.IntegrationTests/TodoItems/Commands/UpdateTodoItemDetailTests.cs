@@ -39,31 +39,45 @@ namespace CleanArchitecture.Application.IntegrationTests.TodoItems.Commands
                 Title = "New List"
             });
 
+            var itemRootId = await SendAsync(new CreateTodoItemCommand
+            {
+                ListId = listId,
+                Title = "New Item Root"
+            });
+
+            const string newItemTitle = "New Item";
             var itemId = await SendAsync(new CreateTodoItemCommand
             {
                 ListId = listId,
-                Title = "New Item"
+                Title = newItemTitle
             });
 
+            var expiryDate = new DateTime(2000, 1, 1);
             var command = new UpdateTodoItemDetailCommand
             {
-                Id = itemId,
+                Id = itemRootId,
                 ListId = listId,
                 Note = "This is the note.",
-                Priority = PriorityLevel.High
+                Priority = PriorityLevel.High,
+                ExpiryDate = expiryDate,
+                TodoRefId = itemId
             };
 
             await SendAsync(command);
 
-            var item = await FindAsync<TodoItem>(itemId);
 
-            item.ListId.Should().Be(command.ListId);
-            item.Note.Should().Be(command.Note);
-            item.Priority.Should().Be(command.Priority);
-            item.LastModifiedBy.Should().NotBeNull();
-            item.LastModifiedBy.Should().Be(userId);
-            item.LastModified.Should().NotBeNull();
-            item.LastModified.Should().BeCloseTo(DateTime.Now, 10000);
+            var itemRoot = await FindTodoFullInfoAsync(itemRootId);
+            itemRoot.ListId.Should().Be(command.ListId);
+            itemRoot.Note.Should().Be(command.Note);
+            itemRoot.Priority.Should().Be(command.Priority);
+            itemRoot.LastModifiedBy.Should().NotBeNull();
+            itemRoot.LastModifiedBy.Should().Be(userId);
+            itemRoot.LastModified.Should().NotBeNull();
+            itemRoot.LastModified.Should().BeCloseTo(DateTime.Now, 10000);
+            itemRoot.ExpiryDate.Should().Be(expiryDate);
+            
+            itemRoot.TodoItemRef.Should().NotBeNull();
+            itemRoot.TodoItemRef.Title.Should().Be(newItemTitle);
         }
     }
 }

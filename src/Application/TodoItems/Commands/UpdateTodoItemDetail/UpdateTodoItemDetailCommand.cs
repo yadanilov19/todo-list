@@ -46,11 +46,8 @@ namespace CleanArchitecture.Application.TodoItems.Commands.UpdateTodoItemDetail
             entity.Priority = request.Priority;
             entity.Note = request.Note;
             entity.ExpiryDate = request.ExpiryDate;
-
-            if (request.TodoRefId is not null)
-            {
-                entity.TodoItemRef = new TodoItem() {Id = (int) request.TodoRefId};
-            }
+            entity.TodoItemRefId = request.TodoRefId;
+            
 
             await _context.SaveChangesAsync(cancellationToken);
 

@@ -10,13 +10,13 @@ namespace CleanArchitecture.Domain.Entities
     {
         public int Id { get; set; }
 
-        public TodoList List { get; set; }
+        public virtual TodoList List { get; set; }
 
         public int ListId { get; set; }
         public string Title { get; set; }
 
         public string Note { get; set; }
-
+        
         public PriorityLevel Priority { get; set; }
 
         public DateTime? ExpiryDate { get; set; }
@@ -36,7 +36,8 @@ namespace CleanArchitecture.Domain.Entities
             }
         }
         
-        public TodoItem TodoItemRef { get; set; }
+        public int? TodoItemRefId { get; set; }
+        public virtual TodoItem TodoItemRef { get; set; }
 
         public List<DomainEvent> DomainEvents { get; set; } = new List<DomainEvent>();
     }
